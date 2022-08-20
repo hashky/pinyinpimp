@@ -2,10 +2,10 @@ import pinyinpimp
 
 
 def bxor(b1, b2):
-    out = bytearray()
+    out = 0
     for b1, b2 in zip(b1, b2):
-        out.append(b1 ^ b2)
-    return bytes(out)
+        out = out + int(b1 ^ b2)
+    return int(out)
 
 
 b = pinyinpimp.uuidyin()
