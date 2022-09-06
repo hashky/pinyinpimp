@@ -6,14 +6,18 @@ from .. import data as pin
 n = len(pin.allpin)
 M = np.zeros((n, n))
 
-
-def pin_adic(pin1, pin2, p=3):
-    """specialized function for p-adic ultrametric between two elements of a set that is max 6 chars"""
+def sord(p) -> int:
+    return ord(p.lower())-96
+def sordm(p1,p2):
+    return np.abs(sord(p1)-sord(p2))
+def pin_adic(pin1, pin2, p=29, n=6,dmetrik=sordm):
+    """specialized function for computing p-adic based ultrametric between objects composed of at most p-1 distinct elements of maximum length n with provided metric dmetrik (any,any) -> float. p must be prime,"""
     s = 0
-    for j, (p1, p2) in enumerate(zip(pin1.ljust(6), pin2.ljust(6))):
+    for j, (p1, p2) in enumerate(zip(pin1.ljust(n), pin2.ljust(n))):
         if p1 != p2:
-            s += 1 / (p ** j)
-    return s
+            s = dmetrik(p1,p2)/ (p ** j)
+            return s
+        return s
 
 
 def mkdecoder(pinset=pin.allpin, metric=pin_adic, N=256):
@@ -28,7 +32,7 @@ def mkdecoder(pinset=pin.allpin, metric=pin_adic, N=256):
     pasc = total.argsort()
     pdesc = list(np.flip(pasc))
     out = [pdesc[0]]
-    while len(out) < N:
+    while len(out) < N+1:
         ma = []
         for p2 in pdesc:
             s = 0

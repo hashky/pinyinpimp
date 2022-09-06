@@ -15,9 +15,14 @@ for d in zhongaa:
 
 
 def reverseUCODE(fourhex):
-    out = pinyin.pinyin.unicodedata.ucd_3_2_0.lookup(
-        "CJK UNIFIED IDEOGRAPH-" + (fourhex)
-    )
+    try:
+        out = pinyin.pinyin.unicodedata.ucd_3_2_0.lookup(
+            "CJK UNIFIED IDEOGRAPH-" + (fourhex)
+        )
+    except:
+        out = pinyin.pinyin.unicodedata.ucd_3_2_0.lookup(
+            "CJK COMPATIBILITY IDEOGRAPH-" + (fourhex)
+        )
     return out
 
 
